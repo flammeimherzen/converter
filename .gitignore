@@ -1,0 +1,75 @@
+# Dependencies and build output
+node_modules/
+dist/
+forma.app/
+*.app/
+
+# Runtime data: uploads, finished conversions, generated backgrounds
+tmp/
+cache/
+.tmp-test/
+uploads/
+output/
+exports/
+
+# Local config and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.mobileprovision
+*.cer
+id_rsa
+id_ed25519
+
+# User media dropped into the project
+*.mp3
+*.wav
+*.m4a
+*.aac
+*.flac
+*.ogg
+*.oga
+*.opus
+*.aiff
+*.aif
+*.wma
+*.caf
+*.amr
+*.ac3
+*.mka
+*.weba
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.ogv
+*.avi
+*.m4v
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS, editors, local tool state
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.idea/
+.vscode/
+.cursor/
+*.code-workspace
+*.swp
+*~

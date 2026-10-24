@@ -1,0 +1,19 @@
+{
+  "name": "forma",
+  "productName": "forma",
+  "description": "Local audio and video converter. Files stay on this computer.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "open forma.app",
+    "server": "node server.js",
+    "build": "bash native/build.sh"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "multer": "^2.5.0"
+  }
+}

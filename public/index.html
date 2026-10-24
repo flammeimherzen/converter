@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light" />
+    <title>forma — audio converter</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c1c1e'/%3E%3Cpath d='M16 6.5l1.4 6.1 6.1 1.4-6.1 1.4L16 21.5l-1.4-6.1-6.1-1.4 6.1-1.4z' fill='%23fff'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="veil" class="veil" hidden>
+      <p><strong>Drop it</strong><span>we’ll convert it</span></p>
+    </div>
+
+    <header class="nav">
+      <a class="brand" href="/">
+        <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2l1.5 7.3 7.3 1.5-7.3 1.5L12 19.8l-1.5-7.3L3.2 11l7.3-1.5z"/></svg>
+        <span>forma</span>
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#tool">Converter</a>
+        <a href="#how">How it works</a>
+        <a href="#formats">Formats</a>
+      </nav>
+      <div class="format-pills" role="radiogroup" aria-label="Output format">
+        <button type="button" role="radio" data-target="wav">WAV</button>
+        <button type="button" role="radio" data-target="mp3">MP3</button>
+        <button type="button" role="radio" data-target="m4a">M4A</button>
+        <button type="button" role="radio" data-target="flac">FLAC</button>
+        <button type="button" role="radio" data-target="ogg">OGG</button>
+        <button type="button" role="radio" data-target="opus">OPUS</button>
+        <button type="button" role="radio" data-target="aiff">AIFF</button>
+        <button type="button" role="radio" data-target="mp4-720" aria-checked="true">MP4 720p</button>
+        <button type="button" role="radio" data-target="mp4-1080">MP4 1080p</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <p class="live" id="pill"><span class="pulse" aria-hidden="true"></span> local · on this Mac</p>
+      <h1>Turn a file<br>into the one you need</h1>
+      <p class="lede">
+        Drop any audio file, or a video with a soundtrack.
+        Leave with WAV, MP3, M4A, FLAC, OGG, Opus, AIFF, or an MP4 with a violet horizon.
+        The file stays on this computer.
+      </p>
+
+      <section class="tool" id="tool" aria-labelledby="stage-title">
+        <h2 id="stage-title" class="sr">Convert</h2>
+        <div class="stage" id="stage">
+          <canvas id="wave" width="800" height="320" aria-hidden="true"></canvas>
+
+          <div id="view-idle" class="view view-idle">
+            <button type="button" class="idle-hit" id="browse">
+              <span class="kicker">drop it here</span>
+              <span class="drop-title">Audio file</span>
+              <span class="choose">or choose from disk</span>
+              <span class="formats" id="formats">mp3 · wav · m4a · flac · ogg · opus · aiff · mp4 · mov · mkv</span>
+            </button>
+          </div>
+
+          <div id="view-ready" class="view view-ready" hidden>
+            <div class="file-top">
+              <div class="file-copy">
+                <p class="file-name" id="file-name"></p>
+                <p class="file-meta" id="file-meta"></p>
+              </div>
+              <button type="button" class="text-btn" id="replace">replace</button>
+            </div>
+            <div class="player" id="player">
+              <button type="button" class="icon-btn" id="play" aria-label="Play">
+                <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.2 3.4v9.2L13 8 5.2 3.4z"/></svg>
+                <svg class="i-pause" viewBox="0 0 16 16" hidden aria-hidden="true"><path d="M4.2 3h2.4v10H4.2zM9.4 3h2.4v10H9.4z"/></svg>
+              </button>
+              <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Position in the file" />
+              <span id="clock">0:00</span>
+            </div>
+          </div>
+
+          <div id="view-run" class="view view-run" hidden>
+            <p class="percent"><span id="percent">0</span><small>%</small></p>
+            <p class="status" id="status" aria-live="polite">reading the file</p>
+            <div class="track" id="track"><i id="bar"></i></div>
+          </div>
+
+          <div id="view-done" class="view view-done" hidden>
+            <video id="video" controls playsinline preload="metadata"></video>
+            <audio id="result" controls hidden></audio>
+            <p class="done-note" id="done-note">Ready</p>
+          </div>
+        </div>
+
+        <p id="alert" class="alert" role="alert" hidden></p>
+
+        <div class="format-pills card-pills" role="radiogroup" aria-label="Output format">
+          <button type="button" role="radio" data-target="wav">WAV</button>
+          <button type="button" role="radio" data-target="mp3">MP3</button>
+          <button type="button" role="radio" data-target="m4a">M4A</button>
+          <button type="button" role="radio" data-target="flac">FLAC</button>
+          <button type="button" role="radio" data-target="ogg">OGG</button>
+          <button type="button" role="radio" data-target="opus">OPUS</button>
+          <button type="button" role="radio" data-target="aiff">AIFF</button>
+          <button type="button" role="radio" data-target="mp4-720" aria-checked="true">MP4 720p</button>
+          <button type="button" role="radio" data-target="mp4-1080">MP4 1080p</button>
+        </div>
+        <div class="bar">
+          <button type="button" class="btn ghost" id="again" hidden>Another file</button>
+          <button type="button" class="btn" id="go" disabled>Convert</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="how" id="how">
+      <p class="eyebrow">how it works</p>
+      <h2>One file, one result</h2>
+      <p class="how-lede">Conversion happens here. The result opens anywhere.</p>
+
+      <div class="sheet">
+        <article>
+          <span class="step">Step 1</span>
+          <h3>Input</h3>
+          <p>Any soundtrack. Audio files, or video that already has one.</p>
+          <ul>
+            <li>MP3, WAV, M4A, FLAC, OGG, Opus, AIFF</li>
+            <li>AAC, CAF, WMA, and the rest ffmpeg can read</li>
+            <li>MP4, MOV, MKV, and WebM, audio extracted</li>
+          </ul>
+        </article>
+        <article>
+          <span class="step">Step 2</span>
+          <h3>Frame</h3>
+          <p>Audio-only files drawn into MP4 get a line on a violet horizon. A picture already in the file stays in the frame.</p>
+          <ul>
+            <li>720p when you want it fast</li>
+            <li>1080p when you want a larger frame</li>
+            <li>Audio formats skip the picture</li>
+          </ul>
+        </article>
+        <article>
+          <span class="step">Step 3</span>
+          <h3>Output</h3>
+          <p>WAV, MP3, M4A, FLAC, OGG, Opus, AIFF, or MP4. Play it here, then save it.</p>
+          <ul>
+            <li>H.264 and AAC when the result is video</li>
+            <li>The codec that belongs to the format you picked</li>
+            <li>Nothing is uploaded</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <input id="file" type="file" accept="audio/*,video/*,.ogg,.oga,.opus,.ogv,.mp3,.wav,.m4a,.aac,.flac,.aiff,.aif,.wma,.caf,.amr,.mp4,.mov,.mkv,.webm,.avi,.m4v" hidden />
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
